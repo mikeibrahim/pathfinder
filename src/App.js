@@ -2,8 +2,8 @@ class App {
   // Class Data
   static inst;
   static startSize = 20;
-  static obstacleSize = 150;
-  static numObstacles = 3;
+  static obstacleSize = 75;
+  static numObstacles = 5;
   static endSize = 20;
 
   // Field Data
@@ -47,10 +47,10 @@ class App {
   newSimulation() {
     this.clearObstacles();
     for (let i = 0; i < App.numObstacles; i++) {
-      this.addObstacle(this.#getRandomPoint(App.obstacleSize));
+      this.addObstacle(this.#getRandomPoint(App.obstacleSize, width * 4 / 5, height * 4 / 5));
     }
-    this.setStart(this.#getRandomPoint(App.startSize));
-    this.setEnd(this.#getRandomPoint(App.endSize));
+    this.setStart(this.#getRandomPoint(App.startSize, width, height));
+    this.setEnd(this.#getRandomPoint(App.endSize, width, height));
     this.#agent = new Agent({
       start: this.#start,
       end: this.#end,
@@ -59,12 +59,12 @@ class App {
   }
 
   // Private Methods
-  #getRandomPoint(radius) {
-    let v = createVector(random(-width / 2 + radius, width / 2 - radius), random(-height / 2 + radius, height / 2 - radius));
+  #getRandomPoint(radius, w, h) {
+    let v = createVector(random(-w / 2 + radius, w / 2 - radius), random(-h / 2 + radius, h / 2 - radius));
 
     for (let obstacle of this.#obstacles) {
       if (v.dist(obstacle) < radius + App.obstacleSize) {
-        return this.#getRandomPoint(radius);
+        return this.#getRandomPoint(radius, w, h);
       }
     }
     return v;
